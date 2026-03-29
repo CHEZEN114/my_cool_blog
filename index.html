@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Blog - 现代博客</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">
+                    <span class="logo-text">COOL</span>
+                    <span class="logo-accent">BLOG</span>
+                </a>
+                <div class="nav-links">
+                    <a href="#home" class="nav-link active">首页</a>
+                    <a href="#posts" class="nav-link">文章</a>
+                    <a href="#about" class="nav-link">关于</a>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <span class="icon">🌙</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="line">用代码</span>
+                        <span class="line highlight">创造世界</span>
+                    </h1>
+                    <p class="hero-subtitle">分享开发、设计与创意的数字花园</p>
+                    <div class="hero-actions">
+                        <a href="#posts" class="btn btn-primary">开始阅读</a>
+                        <a href="#about" class="btn btn-secondary">了解更多</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="posts" class="posts-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">最新文章</h2>
+                    <p class="section-subtitle">探索技术与创意的交汇点</p>
+                </div>
+                <div class="posts-grid" id="postsGrid">
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="section-title">关于这个博客</h2>
+                        <p>欢迎来到 Cool Blog！这里是一个分享技术、设计和创意想法的数字空间。</p>
+                        <p>我们相信代码的力量，相信通过分享和交流可以让技术变得更有趣、更有温度。</p>
+                        <div class="stats">
+                            <div class="stat">
+                                <span class="stat-number">12</span>
+                                <span class="stat-label">文章</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">3.2k</span>
+                                <span class="stat-label">阅读</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">∞</span>
+                                <span class="stat-label">热情</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">© 2024 Cool Blog. 用 ❤️ 和代码构建</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">GitHub</a>
+                    <a href="#" class="social-link">Twitter</a>
+                    <a href="#" class="social-link">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
