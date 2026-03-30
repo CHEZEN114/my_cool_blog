@@ -9,26 +9,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="progress-bar" id="progressBar"></div>
+    
     <nav class="navbar">
         <div class="container">
             <div class="nav-content">
-                <a href="#" class="logo">
+                <a href="#home" class="logo" onclick="showHome(); return false;">
                     <span class="logo-text">COOL</span>
                     <span class="logo-accent">BLOG</span>
                 </a>
                 <div class="nav-links">
-                    <a href="#home" class="nav-link active">首页</a>
-                    <a href="#posts" class="nav-link">文章</a>
-                    <a href="#about" class="nav-link">关于</a>
+                    <a href="#home" class="nav-link active" onclick="showHome(); return false;">首页</a>
+                    <a href="#posts" class="nav-link" onclick="filterByTag('all'); return false;">文章</a>
+                    <a href="#archive" class="nav-link" onclick="showArchive(); return false;">归档</a>
+                    <a href="#favorites" class="nav-link" onclick="showFavorites(); return false;">收藏</a>
+                    <a href="#about" class="nav-link" onclick="scrollToSection('about'); return false;">关于</a>
                 </div>
-                <button class="theme-toggle" id="themeToggle">
-                    <span class="icon">🌙</span>
-                </button>
+                <div class="nav-actions">
+                    <button class="search-btn" id="searchBtn" title="搜索">
+                        <span class="icon">🔍</span>
+                    </button>
+                    <button class="theme-toggle" id="themeToggle" title="切换主题">
+                        <span class="icon">🌙</span>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
-    <main>
+    <div class="search-modal" id="searchModal">
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索文章..." />
+            <button class="search-close" id="searchClose">✕</button>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <main id="mainContent">
         <section id="home" class="hero">
             <div class="container">
                 <div class="hero-content">
@@ -38,11 +55,12 @@
                     </h1>
                     <p class="hero-subtitle">分享开发、设计与创意的数字花园</p>
                     <div class="hero-actions">
-                        <a href="#posts" class="btn btn-primary">开始阅读</a>
-                        <a href="#about" class="btn btn-secondary">了解更多</a>
+                        <a href="#posts" class="btn btn-primary" onclick="filterByTag('all'); return false;">开始阅读</a>
+                        <a href="#about" class="btn btn-secondary" onclick="scrollToSection('about'); return false;">了解更多</a>
                     </div>
                 </div>
             </div>
+            <div class="particles" id="particles"></div>
         </section>
 
         <section id="posts" class="posts-section">
@@ -51,6 +69,11 @@
                     <h2 class="section-title">最新文章</h2>
                     <p class="section-subtitle">探索技术与创意的交汇点</p>
                 </div>
+                
+                <div class="tags-filter" id="tagsFilter">
+                    <button class="tag-btn active" data-tag="all" onclick="filterByTag('all')">全部</button>
+                </div>
+                
                 <div class="posts-grid" id="postsGrid">
                 </div>
             </div>
@@ -65,7 +88,7 @@
                         <p>我们相信代码的力量，相信通过分享和交流可以让技术变得更有趣、更有温度。</p>
                         <div class="stats">
                             <div class="stat">
-                                <span class="stat-number">12</span>
+                                <span class="stat-number">6</span>
                                 <span class="stat-label">文章</span>
                             </div>
                             <div class="stat">
@@ -81,20 +104,90 @@
                 </div>
             </div>
         </section>
+
+        <section id="archive" class="archive-section" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">文章归档</h2>
+                    <p class="section-subtitle">按时间浏览所有文章</p>
+                </div>
+                <div class="archive-list" id="archiveList"></div>
+            </div>
+        </section>
+
+        <section id="favorites" class="favorites-section" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">我的收藏</h2>
+                    <p class="section-subtitle">你收藏的文章</p>
+                </div>
+                <div class="posts-grid" id="favoritesGrid"></div>
+            </div>
+        </section>
     </main>
+
+    <article class="article-detail" id="articleDetail" style="display: none;">
+        <div class="container">
+            <button class="back-btn" onclick="showHome()">
+                <span>←</span> 返回首页
+            </button>
+            <div class="article-header">
+                <span class="article-tag" id="articleTag"></span>
+                <h1 class="article-title" id="articleTitle"></h1>
+                <div class="article-meta">
+                    <span class="article-date" id="articleDate"></span>
+                    <span class="article-read-time" id="articleReadTime"></span>
+                </div>
+            </div>
+            <div class="article-content" id="articleContent"></div>
+            
+            <div class="article-actions">
+                <div class="favorite-section">
+                    <button class="favorite-btn" id="favoriteBtn" onclick="toggleFavorite()">
+                        <span class="favorite-icon">🤍</span>
+                        <span class="favorite-text">收藏</span>
+                    </button>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareTwitter()">🐦 Twitter</button>
+                    <button class="share-btn" onclick="shareWeibo()">📱 微博</button>
+                    <button class="share-btn" onclick="copyLink()">🔗 复制链接</button>
+                </div>
+                <div class="font-controls">
+                    <button class="font-btn" onclick="changeFontSize(-1)">A-</button>
+                    <button class="font-btn" onclick="changeFontSize(0)">A</button>
+                    <button class="font-btn" onclick="changeFontSize(1)">A+</button>
+                </div>
+            </div>
+            
+            <div class="comments-section">
+                <h3 class="comments-title">💬 评论</h3>
+                <div class="comment-form">
+                    <input type="text" class="comment-input" id="commentName" placeholder="你的名字" />
+                    <textarea class="comment-textarea" id="commentText" placeholder="写下你的评论..."></textarea>
+                    <button class="btn btn-primary" onclick="addComment()">发表评论</button>
+                </div>
+                <div class="comments-list" id="commentsList"></div>
+            </div>
+        </div>
+    </article>
 
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <p class="footer-text">© 2024 Cool Blog. 用 ❤️ 和代码构建</p>
                 <div class="social-links">
-                    <a href="#" class="social-link">GitHub</a>
+                    <a href="https://github.com/CHEZEN114/my_cool_blog" class="social-link" target="_blank">GitHub</a>
                     <a href="#" class="social-link">Twitter</a>
                     <a href="#" class="social-link">Email</a>
                 </div>
             </div>
         </div>
     </footer>
+
+    <button class="back-to-top" id="backToTop" title="返回顶部">
+        <span>↑</span>
+    </button>
 
     <script src="script.js"></script>
 </body>
